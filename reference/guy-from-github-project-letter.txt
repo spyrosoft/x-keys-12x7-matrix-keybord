@@ -1,0 +1,23 @@
+Bennett,
+
+Yes, I'm using my XK-24 on linux.  Here's the project I am using it for:
+https://code.google.com/p/tvscontrol/
+
+I wrote a library for the Qt framework:
+https://github.com/czechtech/libqxkey24
+
+David
+
+
+On Tuesday, July 29, 2014, Bennett wrote:
+
+    Hi CzechTech,
+
+    My name is Bennett. I found you on the github piengineering xkeys stargazers list:
+        https://github.com/piengineering/xkeys
+
+    Do you have an xkeys keyboard which you were able to configure under Linux? If so, would you mind sharing your code with me? Or pointing me in the right direction? I'm getting hex values to print out on key events, but when I get half way across the keyboard, the keys flip. I'm not sure what the proper method of handling this is.
+
+    Thank you! Have a nice day.
+
+    -- Bennett
