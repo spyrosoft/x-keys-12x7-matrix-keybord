@@ -13,9 +13,9 @@ func main() {
 	
 	// Create a feature report
 	// This is always 8*n+1 bytes long where n is > 1
-	data := make( []byte, 9 )
-
-	input, error := matrixKeyboardDevice.Read( data )
+	//data := make( []byte, 9 )
+	
+	input, error := matrixKeyboardDevice.GetFeatureReport( 0, 8 )
 	panicOnError( error )
 	
 	fmt.Println( input )
