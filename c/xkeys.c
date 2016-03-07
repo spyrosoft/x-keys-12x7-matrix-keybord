@@ -19,6 +19,8 @@
 #include "libusb.h"
 #include "iconv.h"
 
+#include "xkeys.h"
+
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
