@@ -18,6 +18,8 @@ http://stackoverflow.com/questions/17679480/details-on-usb-no-luck-so-far/176795
 * https://github.com/GeertJohan/go.hid
     * https://gowalker.org/github.com/GeertJohan/go.hid
     * https://godoc.org/github.com/GeertJohan/go.hid
+* https://github.com/qmsk/onewire/blob/master/hidraw/device.go
+* https://github.com/jessta/udev
 * https://github.com/boombuler/hid
 * https://github.com/popons/go-libusb.git
 * http://lxr.free-electrons.com/source/samples/hidraw/hid-example.c
@@ -46,6 +48,7 @@ The libusb.h file:
 
 http://libusb.sourceforge.net/api-1.0/api.html
 https://github.com/libusb/libusb/wiki
+https://www.kernel.org/doc/Documentation/hid/hidraw.txt
 
 ### Official xkeys code
 
