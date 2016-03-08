@@ -16,7 +16,7 @@
 #include <pthread.h>
 
 /* GNU / LibUSB */
-#include "libusb.h"
+#include </usr/include/libusb-1.0/libusb.h>
 #include "iconv.h"
 
 #include "xkeys.h"
