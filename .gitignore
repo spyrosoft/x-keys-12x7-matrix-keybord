@@ -1,7 +1,9 @@
-/reference/go
-/reference/c
+/attempts/c/udev/udev
+/attempts/c/hidraw-example/hidraw
+/attempts/c/dev-input-and-bus/dev-input/test
+/attempts/go/hid-list-devices/hid/list-devices
+/attempts/go/hidusb/hidusb
+/attempts/go/libusb/libusb
 /reference/linux-drivers-tutorial.html
 /reference/84-key-programmable.png
-/go/hidusb/hidusb
-/go/libusb/libusb
-/c/xkeys
+/attempts/working/xkeys
