@@ -86,7 +86,7 @@ struct hid_device_ {
 static int initialized = 0;
 
 uint16_t get_usb_code_for_current_locale(void);
-static int return_data(hid_device *dev, unsigned char *data, size_t length);
+static int return_hid_data(hid_device *dev, unsigned char *data, size_t length);
 
 static hid_device *new_hid_device(void)
 {
@@ -606,7 +606,7 @@ static void read_callback(struct libusb_transfer *transfer)
 			   way we don't grow forever if the user never reads
 			   anything from the device. */
 			if (num_queued > 30) {
-				return_data(dev, NULL, 0);
+				return_hid_data(dev, NULL, 0);
 			}			
 		}
 		pthread_mutex_unlock(&dev->mutex);
@@ -631,7 +631,7 @@ static void read_callback(struct libusb_transfer *transfer)
 }
 
 
-static void *read_thread(void *param)
+static void *read_hid_thread(void *param)
 {
 	hid_device *dev = param;
 	unsigned char *buf;
@@ -804,7 +804,7 @@ hid_device * HID_API_EXPORT hid_open_path(const char *path)
 							}
 						}
 						
-						pthread_create(&dev->thread, NULL, read_thread, dev);
+						pthread_create(&dev->thread, NULL, read_hid_thread, dev);
 						
 						// Wait here for the read thread to be initialized.
 						pthread_barrier_wait(&dev->barrier);
@@ -884,7 +884,7 @@ int HID_API_EXPORT hid_write(hid_device *dev, const unsigned char *data, size_t 
 
 /* Helper function, to simplify hid_read().
    This should be called with dev->mutex locked. */
-static int return_data(hid_device *dev, unsigned char *data, size_t length)
+static int return_hid_data(hid_device *dev, unsigned char *data, size_t length)
 {
 	/* Copy the data out of the linked list item (rpt) into the
 	   return buffer (data), and delete the liked list item. */
@@ -898,7 +898,7 @@ static int return_data(hid_device *dev, unsigned char *data, size_t length)
 	return len;
 }
 
-static void cleanup_mutex(void *param)
+static void cleanup_hid_mutex(void *param)
 {
 	hid_device *dev = param;
 	pthread_mutex_unlock(&dev->mutex);
@@ -917,12 +917,12 @@ int HID_API_EXPORT hid_read_timeout(hid_device *dev, unsigned char *data, size_t
 #endif
 
 	pthread_mutex_lock(&dev->mutex);
-	pthread_cleanup_push(&cleanup_mutex, dev);
+	pthread_cleanup_push(&cleanup_hid_mutex, dev);
 
 	/* There's an input report queued up. Return it. */
 	if (dev->input_reports) {
 		/* Return the first one */
-		bytes_read = return_data(dev, data, length);
+		bytes_read = return_hid_data(dev, data, length);
 		goto ret;
 	}
 	
@@ -939,7 +939,7 @@ int HID_API_EXPORT hid_read_timeout(hid_device *dev, unsigned char *data, size_t
 			pthread_cond_wait(&dev->condition, &dev->mutex);
 		}
 		if (dev->input_reports) {
-			bytes_read = return_data(dev, data, length);
+			bytes_read = return_hid_data(dev, data, length);
 		}
 	}
 	else if (milliseconds > 0) {
@@ -958,7 +958,7 @@ int HID_API_EXPORT hid_read_timeout(hid_device *dev, unsigned char *data, size_t
 			res = pthread_cond_timedwait(&dev->condition, &dev->mutex, &ts);
 			if (res == 0) {
 				if (dev->input_reports) {
-					bytes_read = return_data(dev, data, length);
+					bytes_read = return_hid_data(dev, data, length);
 					break;
 				}
 				
@@ -1069,14 +1069,14 @@ void HID_API_EXPORT hid_close(hid_device *dev)
 	if (!dev)
 		return;
 	
-	/* Cause read_thread() to stop. */
+	/* Cause read_hid_thread() to stop. */
 	dev->shutdown_thread = 1;
 	libusb_cancel_transfer(dev->transfer);
 
 	/* Wait for read_thread() to end. */
 	pthread_join(dev->thread, NULL);
 	
-	/* Clean up the Transfer objects allocated in read_thread(). */
+	/* Clean up the Transfer objects allocated in read_hid_thread(). */
 	free(dev->transfer->buffer);
 	libusb_free_transfer(dev->transfer);
 	
@@ -1089,7 +1089,7 @@ void HID_API_EXPORT hid_close(hid_device *dev)
 	/* Clear out the queue of received reports. */
 	pthread_mutex_lock(&dev->mutex);
 	while (dev->input_reports) {
-		return_data(dev, NULL, 0);
+		return_hid_data(dev, NULL, 0);
 	}
 	pthread_mutex_unlock(&dev->mutex);
 	
