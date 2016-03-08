@@ -61,4 +61,6 @@ https://www.kernel.org/doc/Documentation/hid/hidraw.txt
 ### Goals
 
 * Open the device using the Vendor ID and Product ID
-* Using hidraw.h read a report from the device
+* Read a report from the device
+* Compare the new state to the previous state
+* For state differences, trigger keydown and keyup events in X
