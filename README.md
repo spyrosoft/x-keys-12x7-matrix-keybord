@@ -1,4 +1,4 @@
-# Research Notes
+# Troubleshooting
 
 ### If there are permissions issues accessing the device
 
@@ -7,6 +7,8 @@ git clone https://github.com/piengineering/xkeys.git
 cd xkeys
 cp udev/90-xkeys.rules /usr/lib/udev/rules.d/
 ```
+
+# Research Notes
 
 ### USB Advice
 
