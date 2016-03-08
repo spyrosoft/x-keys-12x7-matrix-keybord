@@ -1,0 +1,2 @@
+Go bindings for libudev.
+Source: git@github.com:jessta/udev.git
