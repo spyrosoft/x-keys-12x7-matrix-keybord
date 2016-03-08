@@ -1,4 +1,4 @@
-gcc -o xkeys xkeys.c
+gcc -I /usr/include/libusb-1.0/ -lusb-1.0 -l pthread xkeys.c -o xkeys
 
 #http://stackoverflow.com/questions/7741141/compiling-against-libusb-dev-on-ubuntu
 #gcc xkeys.c `pkg-config --libs --cflags libusb-1.0`
@@ -6,4 +6,7 @@ gcc -o xkeys xkeys.c
 #/usr/bin/ld: /tmp/ccgam43P.o: undefined reference to symbol 'pthread_cancel@@GLIBC_2.2.5'
 #/usr/lib/libpthread.so.0: error adding symbols: DSO missing from command line
 #collect2: error: ld returned 1 exit status
+
+#http://www.dreamincode.net/forums/topic/148707-introduction-to-using-libusb-10/
+#gcc -I /usr/include/libusb-1.0/ -L /usr/lib/libusb-1.0.so xkeys.c
 
