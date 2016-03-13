@@ -489,3 +489,5 @@ bool PIE_HID_CALL GetSuppressDuplicateReports(long hnd);
 
 
 #endif /* PIE_HID_H__ */
+
+long connect_to_hid(void);
