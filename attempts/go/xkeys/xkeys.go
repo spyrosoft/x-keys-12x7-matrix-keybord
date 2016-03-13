@@ -13,7 +13,7 @@ import (
 func main() {
 	deviceHandle := C.connect_to_hid()
 	for {
-		
+		deviceData := C.read_from_hid( deviceHandle )
 	}
 	fmt.Println("Done!!")
 }

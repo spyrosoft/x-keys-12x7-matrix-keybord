@@ -2536,3 +2536,26 @@ long connect_to_hid(void)
 	
 	return hid_device_handle;
 }
+
+char device_data[80];
+
+char* read_from_hid(long hid_device_handle)
+{
+	unsigned int hid_device_data_chunk = 0;
+	
+	hid_device_data_chunk = ReadLast(hid_device_handle, device_data);
+	if (hid_device_data_chunk == 0) {
+		return device_data;
+	}
+	
+	hid_device_data_chunk = 0;
+	
+	while (hid_device_data_chunk == 0) {
+		hid_device_data_chunk = BlockingReadData(hid_device_handle, device_data, 20);
+		return device_data;
+	}
+	
+	ClearBuffer(hid_device_handle);
+	
+	return device_data;
+}
