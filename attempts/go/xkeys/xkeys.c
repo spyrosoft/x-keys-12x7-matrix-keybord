@@ -2504,6 +2504,7 @@ void print_buf(char *data, int len)
 
 }
 
+
 long connect_to_hid(void)
 {
 	TEnumHIDInfo info[128];
